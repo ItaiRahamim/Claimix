@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --no-tailwind --no-eslint --app --no-src-dir --import-alias \"@/*\" --yes)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(git add:*)"
+    ]
+  }
+}
