@@ -2,6 +2,8 @@ import { redirect } from "next/navigation"
 import { AppShell } from "@/components/app-shell"
 import type { UserRole } from "@/lib/types"
 
+export const runtime = 'edge'
+
 export default async function DashboardLayout({
   children,
 }: {

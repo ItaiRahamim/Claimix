@@ -2,6 +2,8 @@ import { redirect } from "next/navigation"
 import { NewClaimForm } from "@/components/new-claim-form"
 import type { UserRole } from "@/lib/types"
 
+export const runtime = 'edge'
+
 export default async function NewClaimPage() {
   // DEMO MODE
   if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
