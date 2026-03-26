@@ -1,3 +1,10 @@
+"use client"
+
+// Fix: without "use client", Next.js SSR renders the date on the server
+// with Node.js's timezone, then React hydrates it on the client with the
+// browser's timezone → mismatch → hydration error.
+// "use client" ensures date formatting only ever runs in the browser.
+
 import { format } from "date-fns"
 import { Sparkles } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"

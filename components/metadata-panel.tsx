@@ -2,10 +2,23 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
+import { format, parseISO } from "date-fns"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ClaimStatusBadge } from "@/components/claim-status-badge"
 import { updateClaimStatus } from "@/lib/queries/claims"
 import type { Claim, ClaimStatus, UserRole } from "@/lib/types"
+
+// Fix: toLocaleDateString() produces different strings on the Node.js server
+// vs the browser (different locale/timezone) → React Hydration Error #418.
+// date-fns format() with a fixed format string is always deterministic.
+function formatDate(dateStr: string | null | undefined): string {
+  if (!dateStr) return "—"
+  try {
+    return format(parseISO(dateStr), "MMM d, yyyy")
+  } catch {
+    return dateStr
+  }
+}
 
 const STATUSES: ClaimStatus[] = ["Open", "In Review", "Resolved"]
 
@@ -50,14 +63,8 @@ export function MetadataPanel({ claim, role }: MetadataPanelProps) {
           <Field label="Container Number" value={claim.container_number} />
           <Field label="Invoice Number" value={claim.invoice_number} />
           <Field label="Supplier" value={claim.supplier_name} />
-          <Field
-            label="Stuffing Date"
-            value={claim.stuffing_date ? new Date(claim.stuffing_date).toLocaleDateString() : null}
-          />
-          <Field
-            label="Release Date"
-            value={claim.release_date ? new Date(claim.release_date).toLocaleDateString() : null}
-          />
+          <Field label="Stuffing Date" value={formatDate(claim.stuffing_date)} />
+          <Field label="Release Date" value={formatDate(claim.release_date)} />
           <Field
             label="Waste %"
             value={claim.waste_percentage != null ? `${claim.waste_percentage}%` : null}
