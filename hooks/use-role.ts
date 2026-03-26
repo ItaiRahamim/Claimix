@@ -12,9 +12,11 @@ export function useRole(): UserRole | null {
   useEffect(() => {
     if (DEMO) return
     import("@/lib/supabase/client").then(({ createClient }) => {
-      createClient().auth.getUser().then(({ data: { user } }) => {
-        setRole((user?.user_metadata?.role as UserRole) ?? null)
-      })
+      createClient()
+        .auth.getUser()
+        .then(({ data: { user } }) => {
+          setRole((user?.user_metadata?.role as UserRole) ?? "importer")
+        })
     })
   }, [])
 
@@ -24,16 +26,21 @@ export function useRole(): UserRole | null {
 export function useCurrentUser() {
   const [userId, setUserId] = useState<string | null>(DEMO ? MOCK_USER_ID : null)
   const [role, setRole] = useState<UserRole | null>(DEMO ? "importer" : null)
+  // Bug fix: track loading so callers don't send writes with userId=""
+  const [isLoading, setIsLoading] = useState(!DEMO)
 
   useEffect(() => {
     if (DEMO) return
     import("@/lib/supabase/client").then(({ createClient }) => {
-      createClient().auth.getUser().then(({ data: { user } }) => {
-        setUserId(user?.id ?? null)
-        setRole((user?.user_metadata?.role as UserRole) ?? null)
-      })
+      createClient()
+        .auth.getUser()
+        .then(({ data: { user } }) => {
+          setUserId(user?.id ?? null)
+          setRole((user?.user_metadata?.role as UserRole) ?? "importer")
+          setIsLoading(false)
+        })
     })
   }, [])
 
-  return { userId, role }
+  return { userId, role, isLoading }
 }

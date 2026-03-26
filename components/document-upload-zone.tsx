@@ -155,16 +155,19 @@ export function DocumentUploadZone({
         {/* Upload zone */}
         {canUpload && (
           <div
-            onDragOver={(e) => { e.preventDefault(); setIsDragOver(true) }}
+            onDragOver={(e) => { e.preventDefault(); if (!isPending) setIsDragOver(true) }}
             onDragLeave={() => setIsDragOver(false)}
-            onDrop={(e) => { e.preventDefault(); setIsDragOver(false); handleFiles(e.dataTransfer.files) }}
+            onDrop={(e) => { e.preventDefault(); setIsDragOver(false); if (!isPending) handleFiles(e.dataTransfer.files) }}
             className={cn(
-              "border-2 border-dashed rounded-lg p-6 text-center transition-colors cursor-pointer",
-              isDragOver
-                ? "border-blue-400 bg-blue-50"
-                : "border-gray-200 bg-gray-50 hover:border-gray-300"
+              "border-2 border-dashed rounded-lg p-6 text-center transition-colors",
+              // Bug fix: disable interaction while upload is in progress
+              isPending
+                ? "cursor-not-allowed opacity-60 border-gray-200 bg-gray-50"
+                : isDragOver
+                  ? "border-blue-400 bg-blue-50 cursor-pointer"
+                  : "border-gray-200 bg-gray-50 hover:border-gray-300 cursor-pointer"
             )}
-            onClick={() => inputRef.current?.click()}
+            onClick={() => { if (!isPending) inputRef.current?.click() }}
           >
             <Upload className="h-5 w-5 text-gray-400 mx-auto mb-2" />
             <p className="text-sm text-gray-500">

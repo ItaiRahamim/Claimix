@@ -32,7 +32,12 @@ const schema = z.object({
   stuffing_date: z.string().optional(),
   release_date: z.string().optional(),
   waste_percentage: z.coerce.number().min(0).max(100).optional(),
-  supplier_user_id: z.string().optional(),
+  // Bug fix: must be a valid UUID or empty — Supabase FK rejects non-UUID strings
+  supplier_user_id: z
+    .string()
+    .uuid("Must be a valid UUID (e.g. from Supabase Auth → Users)")
+    .optional()
+    .or(z.literal("")),
 })
 
 type FormValues = z.infer<typeof schema>

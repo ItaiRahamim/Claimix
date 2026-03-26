@@ -28,6 +28,8 @@ import { Button } from "@/components/ui/button"
 import { updateDamageReport } from "@/lib/queries/claims"
 import type { Claim, UserRole } from "@/lib/types"
 
+const DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === "true"
+
 const schema = z.object({
   damage_type: z.string().optional(),
   affected_units: z.coerce.number().int().min(0).optional(),
@@ -77,7 +79,10 @@ export function DamageReportForm({ claim, role }: DamageReportFormProps) {
   })
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (values: FormValues) => updateDamageReport(claim.claim_id, values),
+    mutationFn: (values: FormValues) => {
+      if (DEMO) return Promise.resolve()
+      return updateDamageReport(claim.claim_id, values)
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["claim", claim.claim_id] })
       toast.success("Damage report saved.")

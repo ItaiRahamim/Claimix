@@ -17,7 +17,9 @@ export default async function ClaimsPage() {
     .order("created_at", { ascending: false })
 
   const { data: { user } } = await supabase.auth.getUser()
-  const role = (user?.user_metadata?.role as UserRole) ?? "supplier"
+  // Bug fix: default consistent with layout.tsx ("importer") so the
+  // correct nav items and UI labels appear before metadata is set.
+  const role = (user?.user_metadata?.role as UserRole) ?? "importer"
 
   return (
     <ClaimsListPage

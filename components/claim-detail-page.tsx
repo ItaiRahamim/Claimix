@@ -32,14 +32,17 @@ function LoadingSkeleton() {
 
 export function ClaimDetailPage({ claimId, role }: ClaimDetailPageProps) {
   const router = useRouter()
-  const { userId, role: clientRole } = useCurrentUser()
+  // Bug fix: wait for isLoading before rendering components that write
+  // to Supabase — avoids sending uploaded_by="" or sender_id="" which
+  // violates RLS policies.
+  const { userId, role: clientRole, isLoading: userLoading } = useCurrentUser()
   const effectiveRole = clientRole ?? role
 
   const { data: claim, isLoading: claimLoading, error: claimError } = useClaim(claimId)
   const { data: messages = [], isLoading: messagesLoading } = useMessages(claimId)
   const { data: documents = [] } = useDocuments(claimId)
 
-  if (claimLoading || messagesLoading) return <LoadingSkeleton />
+  if (claimLoading || messagesLoading || userLoading) return <LoadingSkeleton />
 
   if (claimError || !claim) {
     return (

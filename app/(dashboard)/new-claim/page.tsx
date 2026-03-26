@@ -11,8 +11,12 @@ export default async function NewClaimPage() {
   const { createClient } = await import("@/lib/supabase/server")
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  const role = user?.user_metadata?.role as UserRole
 
+  if (!user) redirect("/login")
+
+  // Bug fix: default to "importer" (same as layout) so a user whose
+  // metadata.role is not yet set is not permanently redirected away.
+  const role = (user.user_metadata?.role as UserRole) ?? "importer"
   if (role !== "importer") redirect("/claims")
 
   return <NewClaimForm />
