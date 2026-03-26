@@ -20,6 +20,10 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { createClaim } from "@/lib/queries/claims"
 import { createClient } from "@/lib/supabase/client"
+import { MOCK_CLAIMS, MOCK_USER_ID } from "@/lib/mock-data"
+import type { Claim } from "@/lib/types"
+
+const DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === "true"
 
 const schema = z.object({
   container_number: z.string().min(1, "Required"),
@@ -49,7 +53,38 @@ export function NewClaimForm() {
   })
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (values: FormValues) => {
+    mutationFn: async (values: FormValues): Promise<Claim> => {
+      if (DEMO) {
+        // In demo mode, build a mock claim and push it into the in-memory array
+        const now = new Date().toISOString()
+        const newClaim: Claim = {
+          claim_id: `clm-${Date.now()}`,
+          container_number: values.container_number,
+          invoice_number: values.invoice_number,
+          supplier_name: values.supplier_name,
+          status: "Open",
+          stuffing_date: values.stuffing_date || null,
+          release_date: values.release_date || null,
+          waste_percentage: values.waste_percentage ?? null,
+          claim_summary: null,
+          damage_type: null,
+          affected_units: null,
+          total_units: null,
+          estimated_loss_usd: null,
+          damage_description: null,
+          damage_location: null,
+          temperature_log_present: false,
+          inspector_name: null,
+          inspection_date: null,
+          supplier_user_id: values.supplier_user_id || null,
+          created_by: MOCK_USER_ID,
+          created_at: now,
+          updated_at: now,
+        }
+        MOCK_CLAIMS.unshift(newClaim)
+        return newClaim
+      }
+
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) throw new Error("Not authenticated")

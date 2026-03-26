@@ -40,7 +40,7 @@ export function AppShell({ children, role }: AppShellProps) {
           <div className="flex items-center gap-6">
             {/* Logo / Brand */}
             <span className="text-base font-semibold text-gray-900 tracking-tight">
-              Claimax
+              Claimix
             </span>
 
             {/* Nav */}

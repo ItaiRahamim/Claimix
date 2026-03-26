@@ -4,8 +4,8 @@ export async function middleware(request: NextRequest) {
   // DEMO MODE: bypass all auth checks — remove when connecting Supabase
   if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
     const { pathname } = request.nextUrl
-    // Redirect root and /login straight to /claims
-    if (pathname === "/" || pathname === "/login") {
+    // Redirect root to /claims; /login is left accessible for sign-out to land on
+    if (pathname === "/") {
       const url = request.nextUrl.clone()
       url.pathname = "/claims"
       return NextResponse.redirect(url)
