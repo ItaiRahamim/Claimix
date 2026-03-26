@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -12,7 +11,6 @@ import { createClient } from "@/lib/supabase/client"
 const DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === "true"
 
 export default function LoginPage() {
-  const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
@@ -27,8 +25,7 @@ export default function LoginPage() {
     if (error) {
       toast.error(error.message)
     } else {
-      router.push("/claims")
-      router.refresh()
+      window.location.href = "/claims"
     }
   }
 
@@ -49,7 +46,7 @@ export default function LoginPage() {
               </p>
               <Button
                 className="w-full"
-                onClick={() => router.push("/claims")}
+                onClick={() => { window.location.href = "/claims" }}
               >
                 Continue as Importer (Demo)
               </Button>

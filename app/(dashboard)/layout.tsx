@@ -18,8 +18,8 @@ export default async function DashboardLayout({
 
   if (!user) redirect("/login")
 
-  const role = (user.user_metadata?.role as UserRole) ?? null
-  if (!role) redirect("/login")
+  // Default to "importer" if role not yet set in metadata
+  const role = (user.user_metadata?.role as UserRole) ?? "importer"
 
   return <AppShell role={role}>{children}</AppShell>
 }
