@@ -30,6 +30,7 @@ export function AppShell({ children, role }: AppShellProps) {
     const supabase = createClient()
     await supabase.auth.signOut()
     router.push("/login")
+    router.refresh()
   }
 
   return (
