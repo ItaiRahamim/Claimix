@@ -2,8 +2,6 @@ import { ClaimsListPage } from "@/components/claims-list-page"
 import { MOCK_CLAIMS } from "@/lib/mock-data"
 import type { Claim, UserRole } from "@/lib/types"
 
-export const runtime = 'edge'
-
 export default async function ClaimsPage() {
   // DEMO MODE
   if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {

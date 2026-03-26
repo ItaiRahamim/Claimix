@@ -3,8 +3,6 @@ import { ClaimDetailPage } from "@/components/claim-detail-page"
 import { MOCK_CLAIMS } from "@/lib/mock-data"
 import type { UserRole } from "@/lib/types"
 
-export const runtime = 'edge'
-
 interface PageProps {
   params: Promise<{ claimId: string }>
 }
