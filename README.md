@@ -10,6 +10,31 @@
 
 ---
 
+## Screenshots
+
+### Sign In
+![Sign in screen](docs/screenshots/01-login.png)
+
+### Claims Dashboard
+![Claims list with KPI cards](docs/screenshots/02-claims-list.png)
+
+### Claim Detail — Metadata & AI Overview
+![Claim detail: metadata panel and dynamic AI overview](docs/screenshots/03-claim-detail-top.png)
+
+### Damage Report
+![Structured damage report form](docs/screenshots/04-damage-report.png)
+
+### Documents — 3-Zone Upload Panel
+![Three-zone document panel with file previews](docs/screenshots/05-documents.png)
+
+### Communication Thread
+![Threaded chat between importer and supplier](docs/screenshots/06-chat.png)
+
+### New Claim Form
+![New claim creation form](docs/screenshots/07-new-claim.png)
+
+---
+
 ## Overview
 
 When produce arrives damaged — wrong temperature, broken pallets, water ingress — someone has to manage the claim. Claimix gives importers a single place to open a claim, attach damage evidence, exchange messages with the supplier, and track resolution. Suppliers see only their own claims and can upload their QC documents directly.
